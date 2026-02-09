@@ -3,7 +3,7 @@
 for file in $@   #grabs all arguments
 do
     #define variables
-    no_seq=$(grep '>' $file | wc -l)
+    no_seq=$(grep '>' $file | wc -l | awk '{print $1}')
     length=$(awk '!/>/{total += gsub(/[AaTtGgCc]/, "")} END{print total}' $file) #counts A,a,T,t,G,g;C,c over the whole document, excludes lines starting with '>'
     #counts all elements of sequence
     seq_length=$(awk '
@@ -17,7 +17,7 @@ do
     CG=$(awk '!/>/ {gc_count += gsub(/[GgCc]/, "")} END {print gc_count}' $file)
     line=$(awk '!/>/{print $0}' $file)
 
-    #just claculate if the sequence has just letters
+    #just calculate if the sequence has just letters
     if ! grep -v '^>' "$file" | grep -q '[^A-Za-z ]'; then
         #echo what meren wants to see
         echo "FASTA File Statistics:" #header 
